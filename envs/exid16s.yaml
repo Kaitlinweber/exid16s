@@ -1,0 +1,16 @@
+name: exid16s
+channels:
+- defaults
+- conda-forge
+- bioconda 
+dependencies: 
+# dependencies for extract 16S sequence from barrnap 
+- biopython==
+# dependencies for barnnap
+- barrnap==0.9
+- bedtools >= 2.27.0
+# dependencies for identify species 
+- kraken2==2.1.2
+- bracken==2.6.1
+# dependencies for kraken summary report 
+- pandas==1.3.2
