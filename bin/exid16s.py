@@ -13,6 +13,8 @@ def get_sample_name(file_path):
     return sample_ID
 
 def extract_16S_Barrnap(list_of_fasta_files, barrnap_out):
+    ''' Runs barrnap and extracts the 16S rDNa sequence from Barrnap results
+    ''' 
     for fasta_file in list_of_fasta_files:
         sample_name = get_sample_name(fasta_file)
         barrnap_dir = "barrnap_result/"
@@ -23,8 +25,11 @@ def extract_16S_Barrnap(list_of_fasta_files, barrnap_out):
             except FileExistsError:
                 pass
         subprocess.call(["barrnap", fasta_file, "--outseq", path + f"{sample_name}.fasta"])
-        sequence_16S_dir = "FASTA_16S_sequence/"
         
+        
+        
+        sequence_16S_dir = "FASTA_16S_sequence/"
+
 
 
 
