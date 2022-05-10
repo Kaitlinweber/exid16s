@@ -27,36 +27,59 @@ def extract_from_database_files(files):
     scientific_name_list_organism = []
     scientific_name_list_definition = []
     sequence_list = []
-    always_print = False
+    #always_print = False
     organism_dict = {}
     for database_file in files:
         with open(database_file, 'rb') as data:
-            contents = data.readlines()
             always_print = False
+            contents = data.readlines()
+            
+            merged_contents_list = [] 
             for line in contents:
                 line = line.decode("iso-8859-1")
-                if 'ORGANISM' in line:
-                    scientific_name_organism = line.replace('ORGANISM', '')
-                    scientific_name_list_organism.append(scientific_name_organism)
-                    taxonomy_ID_organism = get_taxonomy_ID(scientific_name_list_organism)
-                else:
+                merged_contents_list.append(line)
+            
+            #dit is nu een string
+            new_contents = ' '.join(merged_contents_list)
+
+            if 'ORGANISM' in new_contents:
+                for line in contents:
+                    line = line.decode("iso-8859-1")
+                    if 'ORGANISM' in line:
+                        scientific_name_organism = line.replace('ORGANISM', '').replace('    ', '')
+                        #print(scientific_name_organism)
+                        taxonomy_ID_organism = get_taxonomy_ID(scientific_name_organism)
+                        #print (taxonomy_ID_organism)
+                    if 'ORIGIN' in line:
+                        always_print = True
+                    if always_print:
+                        origin = line.replace('ORIGIN', '').replace('//', '')
+                        sequence = ''.join((x for x in origin if not x.isdigit()))
+                        sequence = ''.join(sequence.split())
+
+            else:
+                for line in contents:
+                    line = line.decode("iso-8859-1")
                     if 'DEFINITION' in line:
-                        # sometimes there is an empty entry, check the lenght of the line to make sure there is more then only 'DEFINITION'
                         if len(line) > 14:
                             elements = line.split(' ')
                             #new_elements = list(filter(None, elements))
                             genus = elements[2]
                             species = elements[3] # TODO: species/subspecies bespreken 
                             scientific_name_definition = genus + ' ' + species
+                            print(scientific_name_definition)
                             taxonomy_ID_definition = get_taxonomy_ID(scientific_name_definition)
-                            scientific_name_list_definition.append(scientific_name_definition)
-                if 'ORIGIN' in line:
-                    always_print = True
-                if always_print:
-                    origin = line.replace('ORIGIN', '').replace('//', '')
-                    sequence = ''.join((x for x in origin if not x.isdigit()))
-                    sequence = ''.join(sequence.split())
-                    sequence_list.append(sequence)
+                            print(taxonomy_ID_definition)
+
+                    if 'ORIGIN' in line:
+                        always_print = True
+                    if always_print:
+                        origin = line.replace('ORIGIN', '').replace('//', '')
+                        sequence = ''.join((x for x in origin if not x.isdigit()))
+                        sequence = ''.join(sequence.split())
+                        sequence = ''.join(sequence.strip('/n'))
+                        print(sequence)
+
                     
 def get_taxonomy_ID(scientific_name):
     ''' Search for the taxonomy ID based on the scientific name 
@@ -64,7 +87,7 @@ def get_taxonomy_ID(scientific_name):
     Entrez.email = args.email 
     handle = Entrez.esearch(db="Taxonomy", term=scientific_name) 
     record = Entrez.read(handle)
-    taxonomy_ID = record["IdList"]
+    taxonomy_ID = record["IdList"][0]
     return taxonomy_ID
 
 

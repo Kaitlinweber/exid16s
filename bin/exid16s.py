@@ -2,7 +2,7 @@ import argparse
 import pathlib
 import os 
 import subprocess
-from extract_16S_Barrnap import * 
+from extract16S_Barrnap import * 
 
 
 def get_sample_name(file_path):
@@ -13,22 +13,33 @@ def get_sample_name(file_path):
     return sample_ID
 
 def extract_16S_Barrnap(list_of_fasta_files, barrnap_out):
-    ''' Runs barrnap and extracts the 16S rDNa sequence from Barrnap results
+    ''' Runs barrnap and extracts the 16S rDNA sequence from Barrnap results
     ''' 
+    list_barrnap = []
     for fasta_file in list_of_fasta_files:
         sample_name = get_sample_name(fasta_file)
         barrnap_dir = "barrnap_result/"
         for parent_dir in barrnap_out:
             path = os.path.join(parent_dir, barrnap_dir)
+            print(path)
             try:
                 os.mkdir(path)
             except FileExistsError:
                 pass
         subprocess.call(["barrnap", fasta_file, "--outseq", path + f"{sample_name}.fasta"])
         
-        
-        
-        sequence_16S_dir = "FASTA_16S_sequence/"
+    
+    for root, dirs, all_files in os.walk(path):
+        for data_files in all_files:
+            files = os.path.join(root, data_files)
+            list_barrnap.append(files)
+
+    record_list = extraction_16Ssequence(list_barrnap)
+
+    sequence_16S_dir = "FASTA_16S_sequence"
+    output_path = os.path.join(parent_dir, sequence_16S_dir)
+    create_output_file(record_list, list_barrnap, output_path)
+
 
 
 
