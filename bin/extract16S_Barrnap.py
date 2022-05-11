@@ -25,13 +25,10 @@ def extraction_16Ssequence(list_of_fasta_files):
     extracts only the 16S rRNA sequence. 
     ''' 
 
-    record_list = []
-    for fasta_file in list_of_fasta_files:
-        for record in SeqIO.parse(fasta_file, "fasta"):
-            extract_record = '16S_rRNA'
-            if record.id.startswith(extract_record):
-                record_list.append(record)
-    return record_list
+       
+
+
+    
 
 def create_output_file(record_list, list_of_fasta_files, output_path):
     ''' Creates FASTA file with the extracted 16S rRNA sequence 

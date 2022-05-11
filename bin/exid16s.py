@@ -24,18 +24,18 @@ def run_barrnap(list_of_fasta_files, barrnap_out):
                 os.mkdir(path)
             except FileExistsError:
                 pass
-        #subprocess.call(["barrnap", fasta_file, "--outseq", path + f"{sample_name}.fasta"])
-        return parent_dir
+        subprocess.call(["barrnap", fasta_file, "--outseq", path + f"{sample_name}.fasta"])
+    return parent_dir
 
 def extract_16S_barrnap(path):
     ''' Extracts the 16S sequence from the barrnap results 
     ''' 
     list_barrnap = []
-    for root, dirs, all_files in os.walk(path):
+    barrnap_result = str(path) + '/barrnap_result'
+    for root, dirs, all_files in os.walk(barrnap_result):
         for data_files in all_files:
             files = os.path.join(root, data_files)
             list_barrnap.append(files)
-
     record_list = extraction_16Ssequence(list_barrnap)
 
     sequence_16S_dir = "FASTA_16S_sequence"
@@ -45,31 +45,25 @@ def extract_16S_barrnap(path):
     return output_path
 
 
-def run_Kraken2(parent_dir, path_16s, database):
+def run_Kraken2(parent_dir, path_16s, database_file_path):
     ''' Uses 16S sequence from barrnap to run Kraken2
     '''
-    # Get fasta files with 16S sequence 
-    for root, dirs, all_files in os.walk(path_16s):
-        for data_files in all_files:
-            files = os.path.join(root, data_files)
-    
-    #database is posixpath 
-  
-    kraken_folder = "Kraken2_kreports"
+    kraken_folder = "Kraken2_kreports/"
     kraken_output_folder = os.path.join(parent_dir, kraken_folder)
     try:
         os.mkdir(kraken_output_folder)
     except FileExistsError:
         pass
-    print(kraken_output_folder)
-
-
-
     
-
+    for database_files in database_file_path:
+        database = database_files
     
-
-
+    for root, dirs, all_files in os.walk(path_16s):
+        for data_files in all_files:
+            fasta_file_path = os.path.join(root, data_files)
+            sample_name = get_sample_name(fasta_file_path)
+            subprocess.call(["kraken2", "-db", database, fasta_file_path, "--report", kraken_output_folder + f"{sample_name}.kraken2_kreport"])
+            
 
 
 if __name__ == '__main__':
@@ -84,6 +78,4 @@ if __name__ == '__main__':
     args = argument_parser.parse_args()
     barrnap_result= run_barrnap(list_of_fasta_files=args.input, barrnap_out=args.output)
     sequence_16s = extract_16S_barrnap(path=barrnap_result)
-    run_Kraken2(parent_dir=barrnap_result, path_16s=sequence_16s, database=args.database)
-    
-
+    run_Kraken2(parent_dir=barrnap_result, path_16s=sequence_16s, database_file_path=args.database)
