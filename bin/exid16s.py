@@ -48,7 +48,8 @@ def extract_16S_barrnap(path):
 
 
 def run_Kraken2(parent_dir, path_16s, database_file_path):
-    ''' Uses 16S sequence from barrnap to run Kraken2
+    ''' Uses 16S sequence from barrnap to run Kraken2 and creates
+    kreport summary file
     '''
     kraken_folder = "Kraken2_kreports/"
     kraken_output_folder = os.path.join(parent_dir, kraken_folder)
