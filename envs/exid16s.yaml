@@ -3,6 +3,7 @@ channels:
 - defaults
 - conda-forge
 - bioconda 
+- anaconda
 dependencies: 
 # dependencies for extract 16S sequence from barrnap 
 - biopython==
@@ -13,4 +14,4 @@ dependencies:
 - kraken2==2.1.2
 - bracken==2.6.1
 # dependencies for kraken summary report 
-- pandas==1.3.2
+- pandas==1.3.2 
