@@ -1,8 +1,10 @@
 import argparse
 import pathlib
 import os 
+import glob
 import subprocess
 from extract16S_Barrnap import * 
+from make_summary_kreport import *
 
 
 def get_sample_name(file_path):
@@ -36,12 +38,12 @@ def extract_16S_barrnap(path):
         for data_files in all_files:
             files = os.path.join(root, data_files)
             list_barrnap.append(files)
-    record_list = extraction_16Ssequence(list_barrnap)
+    list_all_samples = extraction_16Ssequence(list_barrnap)
 
     sequence_16S_dir = "FASTA_16S_sequence"
     output_path = os.path.join(path, sequence_16S_dir)
 
-    create_output_file(record_list, list_barrnap, output_path)
+    create_output_file(list_all_samples, list_barrnap, output_path)
     return output_path
 
 
@@ -63,7 +65,11 @@ def run_Kraken2(parent_dir, path_16s, database_file_path):
             fasta_file_path = os.path.join(root, data_files)
             sample_name = get_sample_name(fasta_file_path)
             subprocess.call(["kraken2", "-db", database, fasta_file_path, "--report", kraken_output_folder + f"{sample_name}.kraken2_kreport"])
-            
+    
+    kreport_file_path = os.listdir(kraken_output_folder)
+    kreports = glob.glob(kraken_output_folder + '*.kraken2_kreport')
+    summary_file = read_kreport(kreports)
+    summary_file.to_csv(kraken_output_folder + 'summary_file_kreport.csv', index=False)
 
 
 if __name__ == '__main__':
