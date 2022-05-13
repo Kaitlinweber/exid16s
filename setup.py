@@ -15,7 +15,7 @@ VERSION = '0.1.0'
 
 
 REQUIRED = [
-    # 'requests', 'maya', 'records',
+    'biopython', 'pandas'
 ]
 
 
@@ -58,7 +58,7 @@ setup(
     author_email=EMAIL,
     python_requires=REQUIRES_PYTHON,
     url=URL,
-    packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
+    packages=['exid16s'],
     install_requires=REQUIRED,
     extras_require=EXTRAS,
     include_package_data=True,
@@ -68,9 +68,14 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: Implementation :: CPython',
         'Natural Language :: English',
         'Topic :: Scientific/Engineering :: Bio-Informatics'
     ],
+    entry_points={
+        'console_scripts': [
+            'exid16s = exid16s.__main__:main',
+        ],
+    },
 )
