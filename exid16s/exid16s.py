@@ -3,8 +3,8 @@ import pathlib
 import os 
 import glob
 import subprocess
-from extract16S_Barrnap import * 
-from make_summary_kreport import *
+from .extract16S_Barrnap import extraction_16Ssequence, create_output_file
+from .make_summary_kreport import read_kreport
 
 
 def get_sample_name(file_path):
@@ -48,8 +48,7 @@ def extract_16S_barrnap(path):
 
 
 def run_Kraken2(parent_dir, path_16s, database_file_path):
-    ''' Uses 16S sequence from barrnap to run Kraken2 and creates
-    kreport summary file
+    ''' Uses 16S sequence from barrnap to run Kraken2
     '''
     kraken_folder = "Kraken2_kreports/"
     kraken_output_folder = os.path.join(parent_dir, kraken_folder)
@@ -72,17 +71,3 @@ def run_Kraken2(parent_dir, path_16s, database_file_path):
     summary_file = read_kreport(kreports)
     summary_file.to_csv(kraken_output_folder + 'summary_file_kreport.csv', index=False)
 
-
-if __name__ == '__main__':
-    argument_parser = argparse.ArgumentParser()
-    argument_parser.add_argument('-i', '--input', type=pathlib.Path, 
-                        default=[], nargs='+', help='All input files, this would be the assembled WGS data')
-    argument_parser.add_argument('-o', '--output', type=pathlib.Path, 
-                        default=[], nargs='+', help='Filepath to output directory')
-    argument_parser.add_argument('-db', '--database', type=pathlib.Path, 
-                        default=[], nargs='+', help='Path to folder with database')
-    argument_parser.add_argument('-e', '--email', type=str, help='Enter email from NCBI account')
-    args = argument_parser.parse_args()
-    barrnap_result= run_barrnap(list_of_fasta_files=args.input, barrnap_out=args.output)
-    sequence_16s = extract_16S_barrnap(path=barrnap_result)
-    run_Kraken2(parent_dir=barrnap_result, path_16s=sequence_16s, database_file_path=args.database)
