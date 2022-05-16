@@ -4,6 +4,7 @@ from Bio import Entrez
 import argparse
 import pathlib
 import os
+import itertools
 
 
 def get_database_files(file_path):
@@ -26,9 +27,11 @@ def extract_from_database_files(files):
     ''' 
     scientific_name_list_organism = []
     scientific_name_list_definition = []
-    sequence_list = []
+    sequence_list_organism = []
+    sequence_list_definition = []
+    test_list = []
     #always_print = False
-    organism_dict = {}
+    #organism_dict = {}
     for database_file in files:
         with open(database_file, 'rb') as data:
             always_print = False
@@ -47,15 +50,47 @@ def extract_from_database_files(files):
                     line = line.decode("iso-8859-1")
                     if 'ORGANISM' in line:
                         scientific_name_organism = line.replace('ORGANISM', '').replace('    ', '')
-                        #print(scientific_name_organism)
-                        taxonomy_ID_organism = get_taxonomy_ID(scientific_name_organism)
-                        #print (taxonomy_ID_organism)
-                    if 'ORIGIN' in line:
-                        always_print = True
-                    if always_print:
-                        origin = line.replace('ORIGIN', '').replace('//', '')
-                        sequence = ''.join((x for x in origin if not x.isdigit()))
-                        sequence = ''.join(sequence.split())
+                        print(scientific_name_organism)
+                        scientific_name_list_organism.append(scientific_name_organism)
+                        #print("scientific name list", scientific_name_list_organism)
+            
+            
+            if "ORIGIN" in new_contents:
+        
+                always_print = True
+            if always_print:
+
+                origin = line.replace('ORIGIN', '').replace('//', '')
+                sequence = ''.join((x for x in origin if not x.isdigit()))
+                print(sequence)
+                    # if 'ORIGIN' in line:
+                    #     always_print = True
+                    # if always_print:
+                    
+                    #     test_2_list = []
+                    #     origin = line.replace('ORIGIN', '').replace('//', '')
+                    #     sequence = ''.join((x for x in origin if not x.isdigit()))
+                    #     sequence = ''.join(sequence.split())
+                    #     # test_list.append(sequence)
+                    #     # sequence = ''.join(test_list)
+                        
+                    #     test_list.append(sequence)
+                    #     #sequence_list_organism = itertools.chain(*test_list)
+                    #     for e in test_list:
+
+                    #         sequence_list_organism.append(test_list)
+                    #         print(sequence_list_organism)
+                        
+                        
+
+                    
+                        #sequence = sequence + sequence
+                        #sequence = ''.join(sequence)
+                        #print("this is sequence", sequence)
+                        # sequence_list_organism.append(sequence)
+                        # print(sequence_list_organism)
+                        #SPLIT TUSSEN SEQUENCE WEGHALEN EN SEQUENCE LIST MOET UIT DE LOOP 
+
 
             else:
                 for line in contents:
@@ -65,11 +100,12 @@ def extract_from_database_files(files):
                             elements = line.split(' ')
                             #new_elements = list(filter(None, elements))
                             genus = elements[2]
-                            species = elements[3] # TODO: species/subspecies bespreken 
+                            species = elements[3]
                             scientific_name_definition = genus + ' ' + species
-                            print(scientific_name_definition)
-                            taxonomy_ID_definition = get_taxonomy_ID(scientific_name_definition)
-                            print(taxonomy_ID_definition)
+                            scientific_name_list_definition.append(scientific_name_definition)
+                            #print(scientific_name_list_definition)
+                            # taxonomy_ID_definition = get_taxonomy_ID(scientific_name_definition)
+                            # print(taxonomy_ID_definition)
 
                     if 'ORIGIN' in line:
                         always_print = True
@@ -78,8 +114,15 @@ def extract_from_database_files(files):
                         sequence = ''.join((x for x in origin if not x.isdigit()))
                         sequence = ''.join(sequence.split())
                         sequence = ''.join(sequence.strip('/n'))
-                        print(sequence)
+                        sequence_list_definition.append(sequence)
+                        #print(sequence)
+                        #print(sequence_list_definition)
+            
 
+            #add taxonomic ID 
+            # tax_id_string = '|kraken:taxid|'
+            # header = '>sequence' + str(count+1) + tax_id_string + taxonomy_ID_organism + "\t" + scientific_name_organism
+            # print(header)
                     
 def get_taxonomy_ID(scientific_name):
     ''' Search for the taxonomy ID based on the scientific name 
