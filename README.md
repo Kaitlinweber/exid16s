@@ -1,4 +1,4 @@
-# exid16s
+# ExId16S
 
 **Ex**traction and **Id**entification of **16S** rDNA (ExId16S) 
 
@@ -19,6 +19,7 @@ git clone https://github.com/Kaitlinweber/exid16s.git
 ```
 
 2. 
-
-
+```
+pip install .
+```
 
