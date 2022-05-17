@@ -10,7 +10,7 @@ DESCRIPTION = 'Package to extract and identify the 16S sequence.'
 URL = 'https://github.com/Kaitlinweber/exid16s'
 EMAIL = 'kaitlin@live.nl'
 AUTHOR = 'Kaitlin Weber'
-REQUIRES_PYTHON = '>=3.9'
+REQUIRES_PYTHON = '>=3.7.6'
 VERSION = '0.1.0'
 
 
