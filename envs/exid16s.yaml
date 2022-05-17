@@ -6,7 +6,7 @@ channels:
 - anaconda
 dependencies: 
 # dependencies for extract 16S sequence from barrnap 
-- biopython==
+- biopython==1.78
 # dependencies for barnnap
 - barrnap==0.9
 - bedtools >= 2.27.0

@@ -10,7 +10,6 @@ def main():
                         default=[], nargs='+', help='Filepath to output directory')
     argument_parser.add_argument('-db', '--database', type=pathlib.Path, 
                         default=[], nargs='+', help='Path to folder with database')
-    argument_parser.add_argument('-e', '--email', type=str, help='Enter email from NCBI account')
     args = argument_parser.parse_args()
     barrnap_result= exid16s.run_barrnap(list_of_fasta_files=args.input, barrnap_out=args.output)
     sequence_16s = exid16s.extract_16S_barrnap(path=barrnap_result)
