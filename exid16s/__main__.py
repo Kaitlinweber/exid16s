@@ -7,10 +7,11 @@ def main():
     argument_parser.add_argument('-i', '--input', type=pathlib.Path, 
                         default=[], nargs='+', help='All input files, this would be the assembled WGS data')
     argument_parser.add_argument('-o', '--output', type=pathlib.Path, 
-                        default=[], nargs='+', help='Filepath to output directory')
+                        default=[], nargs='+', help='Filepath to output directory that will be created')
     argument_parser.add_argument('-db', '--database', type=pathlib.Path, 
                         default=[], nargs='+', help='Path to folder with database')
     args = argument_parser.parse_args()
+    output_directory = create_directory(directory_file_path=args.output)
     barrnap_result= exid16s.run_barrnap(list_of_fasta_files=args.input, barrnap_out=args.output)
     sequence_16s = exid16s.extract_16S_barrnap(path=barrnap_result)
     exid16s.run_Kraken2(parent_dir=barrnap_result, path_16s=sequence_16s, database_file_path=args.database)

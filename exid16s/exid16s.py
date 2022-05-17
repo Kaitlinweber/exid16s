@@ -14,9 +14,15 @@ def get_sample_name(file_path):
     sample_ID = str(file_path.stem)
     return sample_ID
 
+
 def run_barrnap(list_of_fasta_files, barrnap_out):
     ''' Runs barrnap with fasta files to extract rDNA
     '''  
+    try: 
+        os.mkdir(barrnap_out)
+    except FileExistsError:
+        pass
+        
     for fasta_file in list_of_fasta_files:
         sample_name = get_sample_name(fasta_file)
         barrnap_dir = "barrnap_result/"
