@@ -18,19 +18,20 @@ def get_sample_name(file_path):
 def run_barrnap(list_of_fasta_files, barrnap_out):
     ''' Runs barrnap with fasta files to extract rDNA
     '''  
-    for fasta_file in list_of_fasta_files:
-        sample_name = get_sample_name(fasta_file)
-        barrnap_dir = "barrnap_result/"
-        for parent_dir in barrnap_out:
+    for parent_dir in barrnap_out:
             try: 
                 os.mkdir(parent_dir)
             except FileExistsError:
                 pass
-            path = os.path.join(parent_dir, barrnap_dir)
-            try:
-                os.mkdir(path)
-            except FileExistsError:
-                pass
+
+    for fasta_file in list_of_fasta_files:
+        sample_name = get_sample_name(fasta_file)
+        barrnap_dir = "barrnap_result/"
+        path = os.path.join(parent_dir, barrnap_dir)
+        try:
+            os.mkdir(path)
+        except FileExistsError:
+            pass
         subprocess.call(["barrnap", fasta_file, "--outseq", path + f"{sample_name}.fasta"])
     return parent_dir
 
