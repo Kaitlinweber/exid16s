@@ -32,7 +32,7 @@ def run_barrnap(list_of_fasta_files, barrnap_out):
             os.mkdir(path)
         except FileExistsError:
             pass
-        subprocess.run(["barrnap", fasta_file, "--outseq", path + f"{sample_name}.fasta"], check=True)
+        subprocess.call(["barrnap", fasta_file, "--outseq", path + f"{sample_name}.fasta"], check=True)
     return parent_dir
 
 def extract_16S_barrnap(path):
@@ -70,7 +70,7 @@ def run_Kraken2(parent_dir, path_16s, database_file_path):
         for data_files in all_files:
             fasta_file_path = os.path.join(root, data_files)
             sample_name = get_sample_name(fasta_file_path)
-            subprocess.run(["kraken2", "-db", database, fasta_file_path, "--report", kraken_output_folder + f"{sample_name}.kraken2_kreport"], check=True)
+            subprocess.call(["kraken2", "-db", database, fasta_file_path, "--report", kraken_output_folder + f"{sample_name}.kraken2_kreport"], check=True)
     
     kreport_file_path = os.listdir(kraken_output_folder)
     kreports = glob.glob(kraken_output_folder + '*.kraken2_kreport')
