@@ -28,9 +28,9 @@ def read_kreport(list_of_kreports):
     for file_ in list_of_kreports:
         kreport= pd.read_csv(file_, sep='\t', 
                     names=['Covered reads %', '0', '1', 'Rank', '2', 'Scientific name'])
-        threshold_hit = 30    #  the 30 needs to be edited based on the graph for percentage coverage read
+
         array =['G', 'S'] 
-        kreport_result = kreport.loc[(kreport['Covered reads %'] >= threshold_hit) & kreport['Rank'].isin(array)]
+        kreport_result = kreport.loc[kreport['Rank'].isin(array)]
         kreport_result = kreport_result.loc[:,['Covered reads %', 'Rank', 'Scientific name']] 
         number_of_rows = int(kreport_result.shape[0])
         sample_name = get_sample_name(file_path=file_)
