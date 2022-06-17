@@ -2,6 +2,10 @@
 
 **Ex**traction and **Id**entification of **16S** rDNA (ExId16S) 
 
+## General information
+* **Author:** Kaitlin Weber
+* **Commissioned by:** Rijksinstituut voor Volksgezondheid en Milieu (RIVM)
+
 ## Description
 
 ExId16S is a package in which an extraction and bacterial identification with 16S rDNA data is performed on assembled Whole Genome Sequence data. The tool [Barrnap](https://github.com/tseemann/barrnap) is used for the extraction of 16S rDNA, this tool localizes the ribosomal DNA sequences using Hidden Markov Models (HMM). From the output with Barrnap, the 16S rDNA sequence is used for bacterial identification with [Kraken 2](https://github.com/DerrickWood/kraken2input), which identifies bacteria using an alignment free algorithm. For bacterial identification a 16S rDNA database is required, this database must be compatible with Kraken 2.
