@@ -8,9 +8,8 @@ ExId16S is a package in which an extraction and identification with 16S rDNA dat
 From the output with Barrnap, the 16S rDNA sequence is used for as Kraken2 input. Kraken2 identifies bacteria using an alignment free algorithm. 
 
 <p align="center">
-    <img src= "https://user-images.githubusercontent.com/64156013/163177370-bdbd06fa-fa33-435f-8234-b3192b60cd41.jpg", alt="flowchart ExId16S">
+    <img src= "https://user-images.githubusercontent.com/64156013/174275271-26740583-4cb5-48ea-b590-e92656fe7eb3.png", alt="flowchart ExId16S">
 </p>
-  
 
 
 ## Installation
