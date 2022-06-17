@@ -34,7 +34,7 @@ pip install .
 
 ## Required parameters 
 * ```-i, --input``` Pathway to all the input FASTA files. If you give a pathway to a directory, it is important you select all the files with (/*)
-* ```-o, --output``` Directory pathwat, in which the output subdirectories, , will be created
+* ```-o, --output``` Directory pathway, in which the output subdirectories, , will be created
 
 
 ## Usage - Basic command to run the package
