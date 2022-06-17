@@ -34,16 +34,19 @@ pip install .
 
 ## Required parameters 
 * ```-i, --input``` Pathway to all the input FASTA files. If you give a pathway to a directory, it is important you select all the files with (/*)
-* ```-o, --output``` Directory pathway, in which the output subdirectories, , will be created
+* ```-o, --output``` Directory pathway, in which the output subdirectories (barrnap_result, FASTA_16S_sequence and Kraken2_kreports) will be created. If the output directory does not excists, it will be created.
+* ```-db, --database``` Directory for Kraken 2 compatible database. This database needs to contain at least 3 files: ```hash.k2d``` , ```opts.k2d``` , ```taxo.k2d```. 
 
 
 ## Usage - Basic command to run the package
 
 ```
-exid16s -i [path/to/input/dir/*] -o [path/to/output/dir] 
+exid16s -i [path/to/input/dir/*] -o [path/to/output/dir] -db [path/to/database/dir]
 ```
 
 
 ## Output explanation 
-
+* **barrnap_result:** In this directory the barrnap multi-FASTA files will be stored. This are the files with the 5S 23S and 16S sequences.
+* **FASTA_16S_sequence:** Directory with the extracted 16S sequences from Barrnap output, are redirected to FASTA or multi-FASTA files based on the number of copies. 
+* **Kraken2_kreports:** This directory contains one kreport (Kraken 2 identification output) per sample, and a combined summary file with the genus and species information of each kreport. 
 
